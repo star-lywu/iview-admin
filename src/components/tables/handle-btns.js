@@ -21,7 +21,35 @@ const btns = {
         h('Icon', {
           props: {
             type: 'md-trash',
-            size: 18,
+            size: 30,
+            color: '#000000'
+          }
+        })
+      ])
+    ])
+  },
+  update: (h, params, vm) => {
+    return h('Poptip', {
+      props: {
+        confirm: true,
+        title: '你确定要修改吗?'
+      },
+      on: {
+        'on-ok': () => {
+          vm.$emit('on-update', params)
+        }
+      }
+    }, [
+      h('Button', {
+        props: {
+          type: 'text',
+          ghost: true
+        }
+      }, [
+        h('Icon', {
+          props: {
+            type: 'md-brush',
+            size: 30,
             color: '#000000'
           }
         })

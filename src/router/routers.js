@@ -1,5 +1,4 @@
 import Main from '@/components/main'
-import parentView from '@/components/parent-view'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -51,31 +50,31 @@ export default [
     ]
   },
   {
-    path: '/visitor',
-    name: '游客模式管理',
+    path: '/entrance',
+    name: '卡片管理',
     component: Main,
     meta: {
       icon: 'logo-buffer',
-      title: 'visitor'
+      title: 'entrance'
     },
     children: [
       {
-        path: '/',
-        name: '卡片管理',
+        path: '/getAllEntranceCards',
+        name: '卡片信息管理',
         meta: {
           icon: '_qq',
           title: 'QQ群'
         },
-        component: () => import('@/view/visitor/card/card-list.vue')
+        component: () => import('@/view/entrance/card/card-list.vue')
       },
       {
-        path: '/getAllGroup',
+        path: '/getAllCardGroup',
         name: '卡片组管理',
         meta: {
           icon: '_qq',
           title: 'QQ群'
         },
-        component: () => import('@/view/join-page.vue')
+        component: () => import('@/view/entrance/card/card-list2.vue')
       }
     ]
   }

@@ -1,8 +1,8 @@
 import axios from '@/libs/api.request'
 // 获取游客卡片列表
-export const getVisitorCards = () => {
+export const getEntranceCards = () => {
   return axios.request({
-    url: '/visitorCard/getVisitorCards',
+    url: '/entrance/getAllEntranceCards',
     method: 'get'
   })
 }

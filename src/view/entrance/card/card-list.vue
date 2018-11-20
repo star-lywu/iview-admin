@@ -1,0 +1,156 @@
+<template>
+  <div>
+    <Card>
+      <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete" @on-update="handleUpdate"/>
+      <!-- <Button style="margin: 10px 0;" type="primary" @click="modal2 = true">导出为Csv文件</Button> -->
+      <Modal v-model="deleteShow" width="360">
+            <p slot="header" style="color:#f60;text-align:center">
+                <Icon type="ios-information-circle"></Icon>
+                <span>删除</span>
+            </p>
+            <div style="text-align:center">
+                <p>确认要删除【{{delRowName}}】卡片吗？</p>
+            </div>
+            <div slot="footer">
+                <Button type="error" size="large" long :loading="delete_loading" @click="del">删除</Button>
+            </div>
+        </Modal>
+    </Card>
+  </div>
+</template>
+
+<script>
+import Tables from '_c/tables'
+import { getEntranceCards } from '@/api/data'
+export default {
+  name: 'tables_page',
+  components: {
+    Tables
+  },
+  data () {
+    return {
+      self: this,
+      delRowName: '',
+      deleteShow: false,
+      delete_loading: false,
+      columns: [
+        {
+          title: 'ID',
+          key: 'id',
+          render: (h, params) => {
+            return h('div', [
+              h('Icon', {
+                props: {
+                  type: 'person'
+                }
+              }),
+              h('strong', params.row.id)
+            ])
+          }
+        },
+        {
+          title: '卡片名称',
+          key: 'title'
+        },
+        {
+          title: '卡片英文名称',
+          key: 'titleEn'
+        },
+        {
+          title: '是否是新入口',
+          key: 'newAdd'
+        },
+        {
+          title: '排序字段',
+          key: 'orderNumber'
+        },
+        {
+          title: '卡片跳转路径',
+          key: 'actionUrl'
+        },
+        {
+          title: '卡片图片',
+          key: 'imageUrl'
+        },
+        {
+          title: '是否需要登录',
+          key: 'needLogin'
+        },
+        {
+          title: '是否可以展示',
+          key: 'canShow'
+        },
+        {
+          title: '创建时间',
+          key: 'createTime'
+        },
+        {
+          title: '操作',
+          key: 'action',
+          width: 150,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.show(params.index)
+                  }
+                }
+              }, 'Update'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                on: {
+                  click: () => {
+                    this.remove(params.index)
+                  }
+                }
+              }, 'Delete')
+            ])
+          }
+        }
+      ],
+      tableData: []
+    }
+  },
+  methods: {
+    show (index) {
+      this.modalShow = true
+    },
+    remove (index) {
+      this.delRowName = this.tableData[index].title
+      this.deleteShow = true
+      this.tableData.splice(index, 1)
+    },
+    del () {
+      this.delete_loading = true
+      // 后面要请求后端
+      setTimeout(() => {
+        this.delete_loading = false
+        this.deleteShow = false
+        this.$Message.success('删除【' + this.delRowName + '】卡片成功')
+        this.delRowName = ''
+      }, 1000)
+    }
+  },
+  mounted () {
+    getEntranceCards().then(res => {
+      this.tableData = res.data.data
+    })
+  }
+}
+</script>
+
+<style>
+
+</style>
